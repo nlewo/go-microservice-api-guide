@@ -17,6 +17,11 @@ type App struct {
 func (app *App) SetupRouter() {
 	app.Router.
 		Methods("GET").
+		Path("/healthz").
+		HandlerFunc(app.healthzFunction)
+
+	app.Router.
+		Methods("GET").
 		Path("/endpoint/{id}").
 		HandlerFunc(app.getFunction)
 
@@ -24,6 +29,10 @@ func (app *App) SetupRouter() {
 		Methods("POST").
 		Path("/endpoint").
 		HandlerFunc(app.postFunction)
+}
+
+func (app *App) healthzFunction(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }
 
 func (app *App) getFunction(w http.ResponseWriter, r *http.Request) {
